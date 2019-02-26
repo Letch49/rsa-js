@@ -1,0 +1,6 @@
+/.vscode
+/node_modules
+_open.json
+_private.json
+.babelrc
+.eslintrc.json
