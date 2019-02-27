@@ -33,11 +33,11 @@ const saveKey = (mode) => (num, n) => () => {
     return;
 };
 
-const p = bigInt(Crypto.createDiffieHellman(64).getPrime('hex'), 16);
-const q = bigInt(Crypto.createDiffieHellman(64).getPrime('hex'), 16);
+const p = bigInt(Crypto.createDiffieHellman(128).getPrime('hex'), 16);
+const q = bigInt(Crypto.createDiffieHellman(128).getPrime('hex'), 16);
 const n = p.multiply(q);
 const f = p.minus(1).multiply(q.minus(1));
-const d = bigInt(Crypto.createDiffieHellman(512).getPrime('hex'), 16);
+const d = bigInt(Crypto.createDiffieHellman(2048).getPrime('hex'), 16);
 const e = bigInt(d).modInv(f);
 const delemiter = 100000;
 
