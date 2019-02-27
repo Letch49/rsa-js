@@ -4,7 +4,6 @@ const fs = require('fs');
 const _ = require('./rsa');
 
 const main = (args) => {
-    console.log(args);
     if (args['help']) {
         const consoleMessages = {
             '--generate': 'Сгенерировать открытый и закрытый ключ',
@@ -23,47 +22,52 @@ const main = (args) => {
         _.savePrivateKey();
     }
 
-    let fileIn= null;
-    if(args['in']) {
+    let fileIn = null;
+    if (args['in']) {
         fileIn = args['in'];
     }
 
     if (args['e']) {
-        const openKey = JSON.parse(fs.readFileSync(__dirname+'/_open.json', {encoding: 'utf-8'}));
+        const openKey = JSON.parse(fs.readFileSync(__dirname + '/_open.json', { encoding: 'utf-8' }));
         const e = _.hexToDec(openKey['e']);
         const n = _.hexToDec(openKey['n']);
-        const privateKey = JSON.parse(fs.readFileSync(__dirname+'/_private.json', {encoding: 'utf-8'}));
+        const privateKey = JSON.parse(fs.readFileSync(__dirname + '/_private.json', { encoding: 'utf-8' }));
         const d = _.hexToDec(privateKey['d']);
-        fs.readFile(fileIn, {encoding : 'utf-8'} ,(err,message) => {
+        fs.readFile(fileIn, { encoding: 'utf-8' }, (err, message) => {
             if (err) {
                 console.log(err);
                 process.exit(1);
             }
-            message = _.encMessage(message)(e,n,d);
-            fs.writeFile(__dirname+'/enc.txt', message, (err) => {
-                console.log(err);
+            message = _.encMessage(message)(e, n, d);
+            fs.writeFile(__dirname + '/enc.txt', message, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('OK file enc.txt has generated');
+                }
             });
         });
     }
 
     if (args['d']) {
-        const privateKey = JSON.parse(fs.readFileSync(__dirname+'/_private.json', {encoding: 'utf-8'}));
+        const privateKey = JSON.parse(fs.readFileSync(__dirname + '/_private.json', { encoding: 'utf-8' }));
         const d = _.hexToDec(privateKey['d']);
         const n = _.hexToDec(privateKey['n']);
-        fs.readFile(fileIn, {encoding : 'utf-8'} ,(err,message) => {
+        fs.readFile(fileIn, { encoding: 'utf-8' }, (err, message) => {
             if (err) {
                 console.log(err);
                 process.exit(1);
             }
-            // console.log(message.split(','));
-            message = _.decMessage(message)(d,n);
-            fs.writeFile(__dirname+'/dec.txt', message, (err) => {
-                console.log(err);
+            message = _.decMessage(message)(d, n);
+            fs.writeFile(__dirname + '/dec.txt', message, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log('OK file enc.txt has generated');
+                }
             });
         });
     }
 };
 
 main(args);
-
-// console.log(privatePair);

@@ -10,7 +10,12 @@ const saveKey = (mode) => (num, n) => () => {
             'e': num
         });
         fs.writeFile('_open.json', json, (err) => {
-            console.log(err);
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('private key has generated');
+            }
+
         });
     } else if (mode === 'private') {
         const json = JSON.stringify({
@@ -18,13 +23,15 @@ const saveKey = (mode) => (num, n) => () => {
             'd': num
         });
         fs.writeFile('_private.json', json, (err) => {
-            console.log(err);
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('private key has generated');
+            }
         });
     }
     return;
 };
-
-
 
 const p = bigInt(Crypto.createDiffieHellman(64).getPrime('hex'), 16);
 const q = bigInt(Crypto.createDiffieHellman(64).getPrime('hex'), 16);
@@ -46,14 +53,14 @@ const blocksToMessage = (message, sep) => message.map(el => bigInt(el).multiply(
 
 const encMessage = (message) => (key, n) => {
     message = messageToDigit(message);
-    const blocks = messageToBlocks(message,n);
+    const blocks = messageToBlocks(message, n);
     const enycrypt = blocks.map((el) => enc(key, n)(el)).join(',');
     return enycrypt;
 };
 
 const decMessage = (message) => (key, n) => {
     message = message.split(',').map(el => dec(key, n)(el));
-    const blocks = blocksToMessage(message,n).map(el => String.fromCharCode(el)).join('');
+    const blocks = blocksToMessage(message, n).map(el => String.fromCharCode(el)).join('');
     return blocks;
 };
 
