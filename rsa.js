@@ -13,7 +13,7 @@ const saveKey = (mode) => (num, n) => () => {
             if (err) {
                 console.log(err);
             } else {
-                console.log('private key has generated');
+                console.log('public key has generated');
             }
 
         });

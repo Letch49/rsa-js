@@ -63,7 +63,7 @@ const main = (args) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log('OK file enc.txt has generated');
+                    console.log('OK file dec.txt has generated');
                 }
             });
         });
